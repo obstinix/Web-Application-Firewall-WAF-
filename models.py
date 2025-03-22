@@ -1,4 +1,5 @@
 # models.py - Database models for the WAF
+# models.py
 from datetime import datetime
 from . import db
 
@@ -56,4 +57,25 @@ class Rule(db.Model):
 class IPBlacklist(db.Model):
     __tablename__ = 'ip_blacklist'
     
-    id = db.Column(db.Integer, primary_
+    id = db.Column(db.Integer, primary_key=True)
+    ip_address = db.Column(db.String(45), nullable=False)  # IPv6-compatible length
+    reason = db.Column(db.Text)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<IPBlacklist {self.ip_address}>'
+
+class Alert(db.Model):
+    __tablename__ = 'alerts'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    rule_id = db.Column(db.Integer, db.ForeignKey('rules.id'), nullable=False)
+    ip_address = db.Column(db.String(45), nullable=False)
+    request_data = db.Column(db.Text)
+    is_read = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<Alert {self.id}>'

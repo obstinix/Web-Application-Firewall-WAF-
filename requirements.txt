@@ -1,0 +1,5 @@
+Flask==2.2.3
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+Flask-Bcrypt==1.0.1
+Flask-Mail==0.9.1
